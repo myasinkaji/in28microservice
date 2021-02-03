@@ -1,0 +1,286 @@
+{
+	"info": {
+		"_postman_id": "d54cab8e-e886-45a8-9cb4-16aa40a939df",
+		"name": "Microservices",
+		"description": "Microservices project endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "project1",
+			"item": [
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "saveUser",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstname\": \"Yasin\",\r\n    \"lastname\": \"Sadeghi\",\r\n    \"email\": \"myasinkaji@gmial.com\",\r\n    \"departmentId\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:9191/user/users/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9191",
+									"path": [
+										"user",
+										"users",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "find User",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9191/user/users/?id=5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9191",
+									"path": [
+										"user",
+										"users",
+										""
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "department",
+					"item": [
+						{
+							"name": "save",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Magfa\",\r\n    \"address\": \"Iran-Tehran\",\r\n    \"code\": \"dep#3\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:9191/dep/departments/",
+									"host": [
+										"localhost"
+									],
+									"port": "9191",
+									"path": [
+										"dep",
+										"departments",
+										""
+									]
+								},
+								"description": "Save a new Department"
+							},
+							"response": []
+						},
+						{
+							"name": "getById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:9191/dep/departments/3",
+									"host": [
+										"localhost"
+									],
+									"port": "9191",
+									"path": [
+										"dep",
+										"departments",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "in28minutes",
+			"item": [
+				{
+					"name": "limits-service",
+					"item": [
+						{
+							"name": "http://localhost:8080/limits",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/limits",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"limits"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "spring-cloud-config-server",
+					"item": [
+						{
+							"name": "Get limits-service properties",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/limits-service/default",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"limits-service",
+										"default"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "currency-exchange-service",
+					"item": [
+						{
+							"name": "Exchange Currency",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('success_code_check', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test('test_with_expected', () => {\r",
+											"    pm.expect(202, 'Reponse is not in Accept status').to.equal(pm.response.code);   \r",
+											"});\r",
+											"pm.test('is_production_environment_test', () => {\r",
+											"    pm.expect(pm.environment.get('env'), 'You are not in production environment').to.equal('production');   \r",
+											"});\r",
+											"\r",
+											"pm.test(\"success_body_check\", () => {\r",
+											"    pm.response.to.have.body({\r",
+											"    \"id\": 2,\r",
+											"    \"from\": \"EUR\",\r",
+											"    \"to\": \"Rial\",\r",
+											"    \"conversionMultiple\": 40000,\r",
+											"    \"port\": 8001\r",
+											"});\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let environmentName = pm.environment.get('env');\r",
+											"pm.expect(environmentName).to.equal('production')"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8001/currency-exchange/from/EUR/to/Rial/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"currency-exchange",
+										"from",
+										"EUR",
+										"to",
+										"Rial",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "currency-conversion-service",
+					"item": [
+						{
+							"name": "Convert Currency",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8100/currency-conversion/from/EUR/to/Rial/quantity/10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8100",
+									"path": [
+										"currency-conversion",
+										"from",
+										"EUR",
+										"to",
+										"Rial",
+										"quantity",
+										"10"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
